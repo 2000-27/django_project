@@ -1,7 +1,7 @@
-from .views import create_customer, view_customer
+from .views import CustomerAPI
 from django.urls import path
 
 urlpatterns = [
-    path("create_customer", create_customer, name="home page"),
-    path("view_customer", view_customer, name="get page"),
+    path("customer_api", CustomerAPI.as_view()),
+    path("customer_api/<customer_id>", CustomerAPI.as_view()),
 ]

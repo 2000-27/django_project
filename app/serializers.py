@@ -18,6 +18,10 @@ class CustomerDetailsSerlizer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "name does not contain special character"
                 )
+            if not regex.search(validated_data["product_name"]) is None:
+                raise serializers.ValidationError(
+                    "price does not contain special character"
+                )
             if validated_data["price"] < 0:
                 raise serializers.ValidationError("price should be greater than 0")
         return validated_data

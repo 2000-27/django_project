@@ -8,4 +8,4 @@ class CustomerDetail(models.Model):
     price = models.IntegerField()
 
     def __str__(self):
-        return self.cusotomer_name
+        return self.price
