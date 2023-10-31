@@ -14,14 +14,14 @@ class CustomerDetailsSerlizer(serializers.ModelSerializer):
         regex = re.compile("[@_!#$%^&*()<>?/\|}{~:]")
         key_list = validated_data.keys()
         if "name" in key_list:
-            if not regex.search(validated_data["name"]) is None:
+            if regex.search(validated_data["name"]):
                 raise serializers.ValidationError(
-                    "name does not contain special character"
+                    "name field does not contain special character"
                 )
         if "product_name" in key_list:
-            if not regex.search(validated_data["product_name"]) is None:
+            if regex.search(validated_data["product_name"]):
                 raise serializers.ValidationError(
-                    "price does not contain special character"
+                    "product_name field does not contain special character"
                 )
         if "price" in key_list:
             if validated_data["price"] < 0:

@@ -15,17 +15,13 @@ class CustomerAPI(APIView):
                 return Response(
                     {
                         "success": True,
-                        "message": "data is fetch",
                         "data": serializer.data,
                     },
                     status=status.HTTP_200_OK,
                 )
-            except Exception:
+            except CustomerDetail.DoesNotExist:
                 return Response(
-                    {
-                        "success": False,
-                        "message": "Invalid id",
-                    },
+                    {"sucess": False, "message": "invalid id"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
@@ -56,62 +52,52 @@ class CustomerAPI(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    def put(self, request, customer_id=None):
+    def put(self, request, id=None):
         try:
-            if customer_id:
-                customer = CustomerDetail.objects.get(id=id)
-                serializer = CustomerDetailsSerlizer(customer, data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(
-                        {
-                            "sucess": True,
-                            "message": "uptdated ",
-                        },
-                        status=status.HTTP_200_OK,
-                    )
-
+            customer = CustomerDetail.objects.get(id=id)
+            serializer = CustomerDetailsSerlizer(customer, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
                 return Response(
                     {
-                        "sucess": False,
-                        "message": serializer.errors,
+                        "sucess": True,
+                        "message": "uptdated ",
                     },
-                    status=status.HTTP_400_BAD_REQUEST,
+                    status=status.HTTP_200_OK,
                 )
-        except Exception:
+        except CustomerDetail.DoesNotExist:
             return Response(
                 {
                     "sucess": False,
-                    "message": "Invalid ID",
+                    "message": "Invalid id",
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
     def patch(self, request, id=None):
         try:
-            if id:
-                customer = CustomerDetail.objects.get(id=id)
-                serializer = CustomerDetailsSerlizer(
-                    customer, data=request.data, partial=True
-                )
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(
-                        {
-                            "sucess": True,
-                            "message": "updated successfully",
-                        },
-                        status=status.HTTP_200_OK,
-                    )
+            customer = CustomerDetail.objects.get(id=id)
+            serializer = CustomerDetailsSerlizer(
+                customer, data=request.data, partial=True
+            )
+            if serializer.is_valid():
+                serializer.save()
                 return Response(
                     {
-                        "sucess": False,
-                        "message": serializer.errors,
+                        "sucess": True,
+                        "message": "updated successfully",
                     },
-                    status=status.HTTP_400_BAD_REQUEST,
+                    status=status.HTTP_200_OK,
                 )
+            return Response(
+                {
+                    "sucess": False,
+                    "message": serializer.errors,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-        except Exception:
+        except CustomerDetail.DoesNotExist:
             return Response(
                 {
                     "sucess": False,
@@ -121,22 +107,21 @@ class CustomerAPI(APIView):
             )
 
     def delete(self, request, id=None):
-        if id:
-            try:
-                customer = CustomerDetail.objects.get(id=id)
-                customer.delete()
-                return Response(
-                    {
-                        "sucess": True,
-                        "message": "deleted",
-                    },
-                    status=status.HTTP_200_OK,
-                )
-            except Exception:
-                return Response(
-                    {
-                        "sucess": False,
-                        "message": "Invalid id",
-                    },
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+        try:
+            customer = CustomerDetail.objects.get(id=id)
+            customer.delete()
+            return Response(
+                {
+                    "sucess": True,
+                    "message": "deleted",
+                },
+                status=status.HTTP_200_OK,
+            )
+        except CustomerDetail.DoesNotExist:
+            return Response(
+                {
+                    "sucess": False,
+                    "message": "Invalid id",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
