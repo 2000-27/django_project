@@ -56,36 +56,36 @@ class CustomerAPI(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    # def put(self, request, customer_id=None):
-    #     try:
-    #         if customer_id:
-    #             customer = CustomerDetail.objects.get(id=id)
-    #             serializer = CustomerDetailsSerlizer(customer, data=request.data)
-    #             if serializer.is_valid():
-    #                 serializer.save()
-    #                 return Response(
-    #                     {
-    #                         "sucess": True,
-    #                         "message": "uptdated ",
-    #                     },
-    #                     status=status.HTTP_200_OK,
-    #                 )
+    def put(self, request, customer_id=None):
+        try:
+            if customer_id:
+                customer = CustomerDetail.objects.get(id=id)
+                serializer = CustomerDetailsSerlizer(customer, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(
+                        {
+                            "sucess": True,
+                            "message": "uptdated ",
+                        },
+                        status=status.HTTP_200_OK,
+                    )
 
-    #             return Response(
-    #                 {
-    #                     "sucess": False,
-    #                     "message": serializer.errors,
-    #                 },
-    #                 status=status.HTTP_400_BAD_REQUEST,
-    #             )
-    #     except Exception:
-    #         return Response(
-    #             {
-    #                 "sucess": False,
-    #                 "message": "Invalid ID",
-    #             },
-    #             status=status.HTTP_400_BAD_REQUEST,
-    #         )
+                return Response(
+                    {
+                        "sucess": False,
+                        "message": serializer.errors,
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except Exception:
+            return Response(
+                {
+                    "sucess": False,
+                    "message": "Invalid ID",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
     def patch(self, request, id=None):
         try:
@@ -105,15 +105,13 @@ class CustomerAPI(APIView):
                     )
                 return Response(
                     {
-                        "sucess": 0,
-                        "message": "updated successfully",
-                        "details": serializer.errors,
+                        "sucess": False,
+                        "message": serializer.errors,
                     },
-                    status=status.HTTP_103_EARLY_HINTS,
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
 
-        except Exception as e:
-            print("errror ", e)
+        except Exception:
             return Response(
                 {
                     "sucess": False,
